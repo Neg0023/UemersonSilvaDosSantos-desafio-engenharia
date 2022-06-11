@@ -1,149 +1,134 @@
 package entities;
 
-public class Pacote implements Comparable<Pacote>{
-    private final String codigoDeBarras;
-    private String origem;
-    private Integer codOrigem;
-    private String destino;
-    private Integer codDestino;
-    private String codigoLoggi;
-    private String codigoVendedor;
-    private String tipoProduto;
-    private Boolean validacao;
-    private Integer quantidade = 1;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Pacote(String codigoDeBarras, String origem, Integer codOrigem, String destino, Integer codDestino, String codigoLoggi, String codigoVendedor, String tipoProduto) {
-        this.codigoDeBarras = codigoDeBarras;
-        this.origem = origem;
-        this.destino = destino;
+public class Pacote{
+
+    private Integer codigoDeOrigem;
+    private Integer codigoDeDestino;
+    private Integer codigoLoggi;
+    private Integer codigoVendedor;
+    private Integer codigoTipoProduto;
+
+    public Pacote(Integer codigoDeOrigem, Integer codigoDeDestino, Integer codigoLoggi, Integer codigoVendedor, Integer codigoTipoProduto) {
+        this.codigoDeOrigem = codigoDeOrigem;
+        this.codigoDeDestino = codigoDeDestino;
         this.codigoLoggi = codigoLoggi;
         this.codigoVendedor = codigoVendedor;
-        this.tipoProduto = tipoProduto;
-        this.codOrigem = codOrigem;
-        this.codDestino = codDestino;
+        this.codigoTipoProduto = codigoTipoProduto;
     }
 
-    public String getCodigoDeBarras() {
-        return codigoDeBarras;
+    public Integer getCodigoDeOrigem() {
+        return codigoDeOrigem;
     }
 
-    public String getOrigem() {
-        return origem;
+    public void setCodigoDeOrigem(Integer codigoDeOrigem) {
+        this.codigoDeOrigem = codigoDeOrigem;
     }
 
-    public Integer getCodOrigem() {
-        return codOrigem;
+    public Integer getCodigoDeDestino() {
+        return codigoDeDestino;
     }
 
-    public String getDestino() {
-        return destino;
+    public void setCodigoDeDestino(Integer codigoDeDestino) {
+        this.codigoDeDestino = codigoDeDestino;
     }
 
-    public Integer getCodDestino() {
-        return codDestino;
-    }
-
-    public String getCodigoLoggi() {
+    public Integer getCodigoLoggi() {
         return codigoLoggi;
     }
 
-    public String getCodigoVendedor() {
+    public void setCodigoLoggi(Integer codigoLoggi) {
+        this.codigoLoggi = codigoLoggi;
+    }
+
+    public Integer getCodigoVendedor() {
         return codigoVendedor;
     }
 
-    public String getTipoProduto() {
-        return tipoProduto;
+    public void setCodigoVendedor(Integer codigoVendedor) {
+        this.codigoVendedor = codigoVendedor;
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
+    public Integer getCodigoTipoProduto() {
+        return codigoTipoProduto;
     }
 
-    public Boolean getValidacao() {
-        return validacao;
+    public void setCodigoTipoProduto(Integer codigoTipoProduto) {
+        this.codigoTipoProduto = codigoTipoProduto;
     }
 
-    public void identificaCodigoTipoProduto(String tipoProduto) {
-        switch (tipoProduto) {
-            case "001":
-                this.tipoProduto = "Joias";
-                break;
-            case "111":
-                this.tipoProduto = "Livros";
-                break;
-            case "333":
-                this.tipoProduto = "Eletronicos";
-                break;
-            case "555":
-                this.tipoProduto = "Bebidas";
-                break;
-            case "888":
-                this.tipoProduto = "Brinquedos";
-                break;
+    public String regiao(Integer codigoRegiao) {
+        if (codigoRegiao >= 1 && codigoRegiao <= 99) {
+            return "Sudeste";
+        } else if (codigoRegiao <= 199) {
+            return "Sul";
+        } else if (codigoRegiao >= 201 && codigoRegiao <= 299) {
+            return "Centro-oeste";
+        } else if (codigoRegiao <= 300) {
+            return "Nordeste";
+        } else if (codigoRegiao <= 499) {
+            return "Norte";
+        } else {
+            return null;
+        }
+    }
+
+    public String identificaRegiaoOrigem() {
+        return regiao(getCodigoDeDestino());
+    }
+
+    public String identificaRegiaoDestino() {
+        return regiao(getCodigoDeDestino());
+    }
+
+    public String validaCodigoLoggi() {
+
+        if (codigoLoggi != 555) {
+            return null;
+        } else {
+            return "notNull";
+        }
+    }
+
+    public String identificaVendedor() {
+        List<Integer> vendedoresBloqueados = new ArrayList<>();
+        vendedoresBloqueados.add(555);
+        if (vendedoresBloqueados.contains(codigoVendedor)) {
+            return null;
+        } else {
+            return "notNull";
+        }
+    }
+
+    public String identificaTipoProduto() {
+        switch (codigoTipoProduto) {
+            case 1:
+                return "Jóias";
+            case 111:
+                return "Livros";
+            case 333:
+                return "Eletrônicos";
+            case 555:
+                return "Bebidas";
+            case 888:
+                return "Brinquedos";
             default:
-                this.tipoProduto = null;
+                return null;
         }
-    }
-
-    public void identificaCodigoVendedor(String codigoVendedor) {
-        String vendedorBloqueado = "367";
-        if (codigoVendedor.equals(vendedorBloqueado)) {
-            this.codigoVendedor = null;
-        }
-    }
-
-    public void identificaCodigoLoggi(String codigoLoggi) {
-        if (!(codigoLoggi.equals("555"))) {
-            this.codigoLoggi = null;
-        }
-    }
-
-    public void identificaCodigoDestino(String destino) {
-        int destinoInt = Integer.parseInt(destino) ;
-        if ((destinoInt >= 201) && (destinoInt <= 299)) {
-           this.destino = "região Centro-oeste";
-        } else if ((destinoInt >= 300) && (destinoInt <= 399)) {
-            this.destino = "região Nordeste";
-        } else if ((destinoInt >= 400) && (destinoInt <= 499)) {
-            this.destino = "região Norte";
-        } else if ((destinoInt >= 1) && (destinoInt <= 99)) {
-            this.destino = "região Sudeste";
-        } else if ((destinoInt >= 100) && (destinoInt <= 199)) {
-            this.destino = "região Sul";
-        } else {
-            this.destino = null;
-        }
-    }
-
-    public void identificaCodigoOrigem(String origem) {
-        int oringemInt = Integer.parseInt(origem) ;
-        if ((oringemInt >= 201) && (oringemInt <= 299)) {
-            this.origem = "região Centro-oeste";
-        } else if ((oringemInt >= 300) && (oringemInt <= 399)) {
-            this.origem = "região Nordeste";
-        } else if ((oringemInt >= 400) && (oringemInt <= 499)) {
-            this.origem = "região Norte";
-        } else if ((oringemInt >= 1) && (oringemInt <= 99)) {
-            this.origem = "região Sudeste";
-        } else if ((oringemInt >= 100) && (oringemInt <= 199)) {
-            this.origem = "região Sul";
-        } else {
-            this.origem = null;
-        }
-    }
-
-    public void restricao(){
-        validacao = origem != null && destino != null && codigoLoggi != null && codigoVendedor != null && codigoVendedor != null && tipoProduto != null && (!origem.equals("região Centro-oeste") || (!tipoProduto.equals("Joias")));
-    }
-
-    public String toString() {
-        return "Código: " + codigoDeBarras + "\nRegião de origem: " + origem + "\nRegião de destino: " + destino
-                + "\nCodigo Loggi: " + codigoLoggi + "\nCodigo do vendedor do produto: " + codigoVendedor
-                + "\nTipo do produto: " + tipoProduto;
     }
 
     @Override
-    public int compareTo(Pacote oPacote) {
-        return (oPacote.getCodDestino() - this.codDestino);
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Código: ").append(codigoDeOrigem).append(" ").append(codigoDeDestino).append(" ").append(codigoLoggi).append(" ").append(codigoVendedor).append(" ").append(codigoTipoProduto).append("\n");
+        sb.append("Região de origem: ");
+        sb.append("Cidade ").append(codigoDeOrigem).append(", região ").append(identificaRegiaoOrigem()).append("\n");
+        sb.append("Cidade ").append(codigoDeDestino).append(", região ").append(identificaRegiaoDestino()).append("\n");
+        sb.append("Código Loggi: ").append(codigoLoggi).append("\n");
+        sb.append("Código do vendedor do produto: ").append(codigoVendedor).append("\n");
+        sb.append("Tipo do produto: ").append(identificaTipoProduto()).append("\n");
+        return sb.toString();
     }
 }
